@@ -109,7 +109,7 @@ volumeClaimTemplate:
   accessModes: ["ReadWriteOnce"]
   resources:
     requests:
-      storage: 30Gi
+      storage: 250Gi
 
 rbac:
   create: false
@@ -253,14 +253,14 @@ tolerations: []
 # Enabling this will publicly expose your Elasticsearch instance.
 # Only enable this if you have security enabled on your cluster
 ingress:
-  enabled: false
-  annotations: {}
+  enabled: true
+  annotations: { "nginx.ingress.kubernetes.io/backend-protocol": "HTTPS" }
   # kubernetes.io/ingress.class: nginx
   # kubernetes.io/tls-acme: "true"
   className: "nginx"
   pathtype: ImplementationSpecific
   hosts:
-    - host: chart-example.local
+    - host: elasticsearch.kubemea.science.roche.com
       paths:
         - path: /
   tls: []
@@ -293,7 +293,7 @@ lifecycle: {}
 #         curl -XPUT "$ES_URL/_template/$TEMPLATE_NAME" -H 'Content-Type: application/json' -d'{"index_patterns":['\""$INDEX_PATTERN"\"'],"settings":{"number_of_shards":'$SHARD_COUNT',"number_of_replicas":'$REPLICA_COUNT'}}'
 
 sysctlInitContainer:
-  enabled: true
+  enabled: false
 
 keystore: []
 
